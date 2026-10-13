@@ -22,3 +22,6 @@ powerbi/**/.pbi/cache.abf
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# dbt anonymous usage id
+.user.yml

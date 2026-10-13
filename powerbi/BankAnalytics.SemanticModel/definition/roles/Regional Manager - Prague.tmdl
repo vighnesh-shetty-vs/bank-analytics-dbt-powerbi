@@ -4,3 +4,5 @@ role 'Regional Manager - Prague'
 
 	tablePermission District = District[region] = "Prague"
 
+	annotation PBI_Id = b54f07b394fc4ceab107d8d5a100fcc6
+

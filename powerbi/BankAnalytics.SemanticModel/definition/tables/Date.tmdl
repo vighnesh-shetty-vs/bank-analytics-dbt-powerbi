@@ -1,48 +1,56 @@
-table 'Date'
+table Date
+	lineageTag: a180bad0-a9aa-42f3-8032-d70d6a91597a
 	dataCategory: Time
 
 	column date_day
 		dataType: dateTime
-		formatString: yyyy-mm-dd
 		isKey
+		formatString: yyyy-mm-dd
+		lineageTag: da30c14a-0edf-4616-bd99-305771400190
 		summarizeBy: none
 		sourceColumn: date_day
 
 	column year
 		dataType: int64
 		formatString: 0
+		lineageTag: f5662c8a-79b7-4305-b216-7f5ec8af0657
 		summarizeBy: none
 		sourceColumn: year
 
 	column quarter
 		dataType: int64
 		formatString: 0
+		lineageTag: f9266daa-c24e-4409-aa8c-ba97b57219ee
 		summarizeBy: none
 		sourceColumn: quarter
 
 	column month
 		dataType: int64
 		formatString: 0
+		lineageTag: 5a396f5a-7cfb-406f-9f61-133113ee85fb
 		summarizeBy: none
 		sourceColumn: month
 
 	column year_month
 		dataType: string
+		lineageTag: a9f5b3b5-5086-4de1-b39c-5b771afbee0f
 		summarizeBy: none
 		sourceColumn: year_month
 
 	column month_label
 		dataType: string
+		lineageTag: 78d103bd-7009-4e0a-94a7-26d003b7047b
 		summarizeBy: none
 		sourceColumn: month_label
 
 	column month_start
 		dataType: dateTime
 		formatString: yyyy-mm-dd
+		lineageTag: 154e612a-b74d-47c1-a534-aef9ebf6b41e
 		summarizeBy: none
 		sourceColumn: month_start
 
-	partition 'Date' = m
+	partition Date = m
 		mode: import
 		source =
 				let
@@ -53,3 +61,4 @@ table 'Date'
 				    Typed = Table.TransformColumnTypes(Blanks, {{"date_day", type date}, {"year", Int64.Type}, {"quarter", Int64.Type}, {"month", Int64.Type}, {"year_month", type text}, {"month_label", type text}, {"month_start", type date}}, "en-US")
 				in
 				    Typed
+

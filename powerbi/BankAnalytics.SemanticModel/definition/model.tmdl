@@ -6,7 +6,9 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-ref table 'Date'
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Date
 ref table District
 ref table Client
 ref table Account
@@ -14,3 +16,4 @@ ref table Loans
 ref table 'Monthly KPIs'
 
 ref role 'Regional Manager - Prague'
+

@@ -1,114 +1,138 @@
 table Loans
+	lineageTag: 08775302-0b93-4dbc-b41a-4ff717f6fb6e
 
 	measure 'Loan Count' = COUNTROWS(Loans)
 		formatString: #,0
+		lineageTag: f6c3652c-4c00-40dc-9be1-072d9cae1a6a
 
 	measure 'Defaulted Loans' = CALCULATE([Loan Count], Loans[is_default] = TRUE())
 		formatString: #,0
+		lineageTag: 5cb3cd5b-5203-40ca-a253-dee081f2930c
 
 	measure 'Default Rate' = DIVIDE([Defaulted Loans], [Loan Count])
 		formatString: 0.0%
+		lineageTag: 131087d3-70e1-4922-ac7d-45b8538ff1ef
 
 	measure Exposure = SUM(Loans[loan_amount_czk])
 		formatString: #,0
+		lineageTag: fe3b508d-94d7-40d8-8e70-196e106ef5b4
 
 	measure 'Exposure in Default' = CALCULATE([Exposure], Loans[is_default] = TRUE())
 		formatString: #,0
+		lineageTag: 67d4683d-bd2c-47c5-90b4-f1d734eca22d
 
 	measure 'Exposure in Default %' = DIVIDE([Exposure in Default], [Exposure])
 		formatString: 0.0%
+		lineageTag: 063fc9d0-8af8-4fa6-92c9-513e9de60492
 
 	measure 'Average Loan' = AVERAGE(Loans[loan_amount_czk])
 		formatString: #,0
+		lineageTag: 1a2b178e-0206-4bf6-833d-25598449cbc5
 
 	column loan_id
 		dataType: int64
 		formatString: 0
+		lineageTag: 1f3c5f46-9a34-4db5-b48f-e585faedf1b3
 		summarizeBy: none
 		sourceColumn: loan_id
 
 	column account_id
 		dataType: int64
 		formatString: 0
+		lineageTag: a4c954b1-6f1a-49e3-ad1e-61db3a19a454
 		summarizeBy: none
 		sourceColumn: account_id
 
 	column granted_date
 		dataType: dateTime
 		formatString: yyyy-mm-dd
+		lineageTag: cf805ec0-5406-4e09-b767-e95e1a7463a2
 		summarizeBy: none
 		sourceColumn: granted_date
 
 	column loan_amount_czk
 		dataType: double
 		formatString: #,0
+		lineageTag: 51856247-03ac-4fcb-bdeb-1ac8e3f18138
 		summarizeBy: sum
 		sourceColumn: loan_amount_czk
 
 	column duration_months
 		dataType: int64
 		formatString: 0
+		lineageTag: aa5870ad-b63f-44ad-8b11-ced13ec2d30f
 		summarizeBy: none
 		sourceColumn: duration_months
 
 	column monthly_payment_czk
 		dataType: double
 		formatString: #,0
+		lineageTag: 810e9941-81f5-47e4-b333-f5cd17810eb3
 		summarizeBy: sum
 		sourceColumn: monthly_payment_czk
 
 	column status_code
 		dataType: string
+		lineageTag: b3c59af5-bd93-47cb-adf7-dada81bf6c16
 		summarizeBy: none
 		sourceColumn: status_code
 
 	column status_description
 		dataType: string
+		lineageTag: faf801ae-0044-4ba6-80e2-42e73aaea72a
 		summarizeBy: none
 		sourceColumn: status_description
 
 	column is_default
 		dataType: boolean
+		lineageTag: 3152605b-d90d-4ac1-8951-3e2f4d5e9e12
 		summarizeBy: none
 		sourceColumn: is_default
 
 	column district_id
 		dataType: int64
 		formatString: 0
+		lineageTag: d2ed44b9-6b90-4b47-a93e-ac4d6d09a31e
 		summarizeBy: none
 		sourceColumn: district_id
 
 	column owner_gender
 		dataType: string
+		lineageTag: 820f3cc9-0854-47e4-aff0-db2d9f86cbe1
 		summarizeBy: none
 		sourceColumn: owner_gender
 
 	column owner_age_at_grant
 		dataType: int64
 		formatString: 0
+		lineageTag: b24d7b12-4208-4769-988a-6ced63f718af
 		summarizeBy: average
 		sourceColumn: owner_age_at_grant
 
 	column n_negative_balance_events
 		dataType: int64
 		formatString: 0
+		lineageTag: 4ccbee61-c658-4af2-98fb-b29154c6039f
 		summarizeBy: sum
 		sourceColumn: n_negative_balance_events
 
 	column min_balance_90d_czk
 		dataType: double
 		formatString: #,0
+		lineageTag: 0289ceda-fc2b-4870-a830-ecdff5170a2f
 		summarizeBy: average
 		sourceColumn: min_balance_90d_czk
 
 	column payment_to_inflow_ratio
 		dataType: double
 		formatString: 0.00
+		lineageTag: a0a01685-2a94-4912-a1a6-181f41fe6bca
 		summarizeBy: average
 		sourceColumn: payment_to_inflow_ratio
 
 	column overdrawn_before_loan
 		dataType: string
+		lineageTag: a7d78e23-5454-4134-bc22-a4e2910f3a41
 		summarizeBy: none
 		sourceColumn: overdrawn_before_loan
 
@@ -124,3 +148,4 @@ table Loans
 				    WithFlag = Table.AddColumn(Typed, "overdrawn_before_loan", each if [n_negative_balance_events] > 0 then "Yes" else "No", type text)
 				in
 				    WithFlag
+

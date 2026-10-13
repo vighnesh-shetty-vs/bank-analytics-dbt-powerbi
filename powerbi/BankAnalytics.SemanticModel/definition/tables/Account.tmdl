@@ -1,55 +1,67 @@
 table Account
+	lineageTag: 7e3036e9-ef60-497b-b788-09c6b0095ab7
 
 	measure 'Account Count' = COUNTROWS(Account)
 		formatString: #,0
+		lineageTag: fc0c0743-846c-429c-a33f-e82ae317a911
 
 	measure 'Card Holder %' = DIVIDE(CALCULATE([Account Count], Account[has_card] = TRUE()), [Account Count])
 		formatString: 0.0%
+		lineageTag: 6dd6aee7-a51e-49d4-ba0f-258229af0b4c
 
 	measure 'Loan Uptake %' = DIVIDE(CALCULATE([Account Count], Account[has_loan] = TRUE()), [Account Count])
 		formatString: 0.0%
+		lineageTag: 2bd618c9-9109-43e5-8aa7-be5011ff01a1
 
 	column account_id
 		dataType: int64
 		formatString: 0
+		lineageTag: 5cb3a8cd-13bb-4515-b954-b7d6cd7478c3
 		summarizeBy: none
 		sourceColumn: account_id
 
 	column district_id
 		dataType: int64
 		formatString: 0
+		lineageTag: bdedd5f3-e4d2-4dcb-bdb8-f63707a53a68
 		summarizeBy: none
 		sourceColumn: district_id
 
 	column opened_date
 		dataType: dateTime
 		formatString: yyyy-mm-dd
+		lineageTag: b874084d-0eab-4868-802d-ee5c74eb65e1
 		summarizeBy: none
 		sourceColumn: opened_date
 
 	column statement_frequency
 		dataType: string
+		lineageTag: 002524ab-317b-4d26-890b-ad62ed593b47
 		summarizeBy: none
 		sourceColumn: statement_frequency
 
 	column owner_client_id
 		dataType: int64
 		formatString: 0
+		lineageTag: a9111b54-8eb4-4c5b-8d54-86a1e7427f4b
 		summarizeBy: none
 		sourceColumn: owner_client_id
 
 	column best_card_type
 		dataType: string
+		lineageTag: c4ff7b33-4dd0-4295-9b7a-5a9fcf41ce20
 		summarizeBy: none
 		sourceColumn: best_card_type
 
 	column has_card
 		dataType: boolean
+		lineageTag: 14828291-b137-42ee-bdfe-cbb0ca398d8f
 		summarizeBy: none
 		sourceColumn: has_card
 
 	column has_loan
 		dataType: boolean
+		lineageTag: bfa9bd75-f2fd-4eb1-8b7b-392763e9ef14
 		summarizeBy: none
 		sourceColumn: has_loan
 
@@ -64,3 +76,4 @@ table Account
 				    Typed = Table.TransformColumnTypes(Blanks, {{"account_id", Int64.Type}, {"district_id", Int64.Type}, {"opened_date", type date}, {"statement_frequency", type text}, {"owner_client_id", Int64.Type}, {"best_card_type", type text}, {"has_card", type logical}, {"has_loan", type logical}}, "en-US")
 				in
 				    Typed
+

@@ -1,3 +1,4 @@
 /// Folder holding the CSVs written by scripts/run_analyses.py. Change it after cloning.
 expression DataFolder = "C:\Users\shett\Projects\github\bank-analytics-dbt-powerbi\exports\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 1a282bb3-d7f1-4622-a38c-203c5c449dec
 

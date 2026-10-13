@@ -1,24 +1,29 @@
 table Client
+	lineageTag: ab30c70a-0c6c-457e-afb1-7ef22ac0ed1a
 
 	column client_id
 		dataType: int64
 		formatString: 0
+		lineageTag: dcedb8f7-530e-47af-8487-de70f06e0411
 		summarizeBy: none
 		sourceColumn: client_id
 
 	column gender
 		dataType: string
+		lineageTag: c5468acb-3a37-4a7e-af07-c1189d1a28bb
 		summarizeBy: none
 		sourceColumn: gender
 
 	column age_band
 		dataType: string
+		lineageTag: eb3623fd-f600-4dc7-acce-a50c260aa28d
 		summarizeBy: none
 		sourceColumn: age_band
 
 	column age_at_end_1998
 		dataType: int64
 		formatString: 0
+		lineageTag: 0500fd16-e239-47bf-a0cc-1010493a49d8
 		summarizeBy: average
 		sourceColumn: age_at_end_1998
 
@@ -33,3 +38,4 @@ table Client
 				    Typed = Table.TransformColumnTypes(Blanks, {{"client_id", Int64.Type}, {"gender", type text}, {"age_band", type text}, {"age_at_end_1998", Int64.Type}}, "en-US")
 				in
 				    Typed
+

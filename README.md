@@ -42,6 +42,10 @@ data/raw/*.asc  ->  staging (8 views)  ->  intermediate (2 tables)  ->  marts (7
 
 ## Power BI report (`powerbi/BankAnalytics.pbip`)
 
+![Overview page](powerbi/screenshots/overview.png)
+![Loan Risk page](powerbi/screenshots/loan_risk.png)
+![Customers page](powerbi/screenshots/customers.png)
+
 Stored as a **PBIP project**, so the semantic model (TMDL) and the report (PBIR JSON) are plain-text files under version control.
 
 | Page | Contents |

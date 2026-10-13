@@ -6,5 +6,6 @@
         "path": "BankAnalytics.Report"
       }
     }
-  ]
+  ],
+  "settings": {}
 }

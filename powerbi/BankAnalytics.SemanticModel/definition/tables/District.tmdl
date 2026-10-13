@@ -1,0 +1,47 @@
+table District
+
+	column district_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: district_id
+
+	column district_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: district_name
+
+	column region
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+
+	column inhabitants
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: inhabitants
+
+	column avg_salary_czk
+		dataType: int64
+		formatString: #,0
+		summarizeBy: average
+		sourceColumn: avg_salary_czk
+
+	column unemployment_rate_1996_pct
+		dataType: double
+		formatString: 0.00
+		summarizeBy: average
+		sourceColumn: unemployment_rate_1996_pct
+
+	partition District = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_districts.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Selected = Table.SelectColumns(Promoted, {"district_id", "district_name", "region", "inhabitants", "avg_salary_czk", "unemployment_rate_1996_pct"}),
+				    Blanks = Table.ReplaceValue(Selected, "", null, Replacer.ReplaceValue, Table.ColumnNames(Selected)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"district_id", Int64.Type}, {"district_name", type text}, {"region", type text}, {"inhabitants", Int64.Type}, {"avg_salary_czk", Int64.Type}, {"unemployment_rate_1996_pct", type number}}, "en-US")
+				in
+				    Typed

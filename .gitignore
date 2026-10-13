@@ -1,0 +1,24 @@
+# Raw data is downloaded and checksum-verified by scripts/download_data.py
+data/raw/
+data/*.duckdb
+data/*.duckdb.wal
+
+# dbt
+target/
+dbt_packages/
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Power BI local cache (the .pbip project files are tracked)
+powerbi/**/.pbi/localSettings.json
+powerbi/**/.pbi/cache.abf
+
+.DS_Store
+Thumbs.db
+desktop.ini

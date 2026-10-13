@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "c_deposits",
+  "position": {
+    "x": 325,
+    "y": 20,
+    "z": 1,
+    "height": 110,
+    "width": 295,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Deposits (Latest Month)"
+                }
+              },
+              "queryRef": "Monthly KPIs.Deposits (Latest Month)",
+              "nativeQueryRef": "Deposits (Latest Month)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

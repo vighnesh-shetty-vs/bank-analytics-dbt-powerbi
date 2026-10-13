@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: Daily calendar 1993-1998 for Power BI.
+    columns:
+      - name: date_day
+        data_tests: [unique, not_null]
+
+  - name: dim_districts
+    description: 77 Czech districts with region and socio-economic indicators.
+    columns:
+      - name: district_id
+        data_tests: [unique, not_null]
+
+  - name: dim_clients
+    description: Clients with age at end of 1998 and age band.
+    columns:
+      - name: client_id
+        data_tests: [unique, not_null]
+
+  - name: dim_accounts
+    description: One row per account with owner, card and loan flags.
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: owner_client_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_clients'), field: client_id}
+      - name: best_card_type
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['gold', 'classic', 'junior', 'none']}
+
+  - name: fct_transactions
+    description: All 1,056,320 transactions (grain = transaction).
+    columns:
+      - name: trans_id
+        data_tests: [unique, not_null]
+
+  - name: fct_loans
+    description: >
+      One row per loan (682) with features computed only from transactions before the
+      grant date (see int_loan_features_point_in_time), owner demographics and district.
+    columns:
+      - name: loan_id
+        data_tests: [unique, not_null]
+      - name: is_default
+        data_tests: [not_null]
+
+  - name: rpt_monthly_kpis
+    description: >
+      Month x district KPIs. Activity metrics count accounts with at least one transaction
+      in the month; month_end_balance_czk sums the closing balance of those active accounts.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: ['month_start', 'district_id']}

@@ -1,0 +1,23 @@
+relationship rel_01
+	fromColumn: 'Monthly KPIs'.month_start
+	toColumn: 'Date'.date_day
+
+relationship rel_02
+	fromColumn: 'Monthly KPIs'.district_id
+	toColumn: District.district_id
+
+relationship rel_03
+	fromColumn: Loans.granted_date
+	toColumn: 'Date'.date_day
+
+relationship rel_04
+	fromColumn: Loans.district_id
+	toColumn: District.district_id
+
+relationship rel_05
+	fromColumn: Account.district_id
+	toColumn: District.district_id
+
+relationship rel_06
+	fromColumn: Account.owner_client_id
+	toColumn: Client.client_id

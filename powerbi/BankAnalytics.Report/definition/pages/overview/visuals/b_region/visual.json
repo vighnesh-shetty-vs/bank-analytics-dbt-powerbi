@@ -1,0 +1,72 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "b_region",
+  "position": {
+    "x": 800,
+    "y": 150,
+    "z": 5,
+    "height": 300,
+    "width": 430,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "District"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "District.region",
+              "nativeQueryRef": "region",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Deposits (Latest Month)"
+                }
+              },
+              "queryRef": "Monthly KPIs.Deposits (Latest Month)",
+              "nativeQueryRef": "Deposits (Latest Month)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Deposits by region, latest month (CZK)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

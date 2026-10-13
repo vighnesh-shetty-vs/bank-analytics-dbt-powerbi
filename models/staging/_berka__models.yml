@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: stg_berka__accounts
+    description: Accounts with decoded statement frequency and opening date.
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: district_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_berka__districts'), field: district_id}
+      - name: statement_frequency
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: ['monthly', 'weekly', 'after_transaction']}
+
+  - name: stg_berka__clients
+    description: Clients with gender and birth date decoded from the Czech birth number.
+    columns:
+      - name: client_id
+        data_tests: [unique, not_null]
+      - name: gender
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['F', 'M']}
+      - name: birth_date
+        data_tests: [not_null]
+
+  - name: stg_berka__dispositions
+    description: Client-to-account roles. Every account has exactly one owner.
+    columns:
+      - name: disp_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_berka__accounts'), field: account_id}
+      - name: client_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_berka__clients'), field: client_id}
+      - name: disposition_type
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['owner', 'disponent']}
+
+  - name: stg_berka__districts
+    description: District demographics with the A1-A16 source columns named. 1995 unemployment and crime have one missing value ('?').
+    columns:
+      - name: district_id
+        data_tests: [unique, not_null]
+
+  - name: stg_berka__loans
+    description: Loans with decoded status. is_default = status B (finished, not repaid) or D (running, in debt).
+    columns:
+      - name: loan_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        description: An account has at most one loan.
+        data_tests:
+          - unique
+          - relationships:
+              arguments: {to: ref('stg_berka__accounts'), field: account_id}
+      - name: status_code
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['A', 'B', 'C', 'D']}
+
+  - name: stg_berka__transactions
+    description: Transactions with Czech type/operation/purpose codes translated to English.
+    columns:
+      - name: trans_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_berka__accounts'), field: account_id}
+      - name: direction
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['credit', 'debit']}
+      - name: amount_czk
+        data_tests: [not_null]
+
+  - name: stg_berka__cards
+    columns:
+      - name: card_id
+        data_tests: [unique, not_null]
+      - name: disp_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_berka__dispositions'), field: disp_id}
+      - name: card_type
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['junior', 'classic', 'gold']}
+
+  - name: stg_berka__orders
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]

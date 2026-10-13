@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: berka
+    description: >
+      PKDD'99 Discovery Challenge financial dataset (Berka & Sochorova): anonymised data
+      of a Czech bank, 1993-1998. Semicolon-separated .asc files, downloaded and
+      checksum-verified by scripts/download_data.py.
+    meta:
+      external_location: "read_csv('data/raw/{name}.asc', delim=';', header=true, quote='\"', nullstr='', all_varchar=true)"
+    tables:
+      - name: account
+        description: One row per account (4,500).
+      - name: client
+        description: One row per client (5,369). Gender is encoded in the birth number.
+      - name: disp
+        description: Links clients to accounts with a role (owner or authorised user).
+      - name: district
+        description: Demographic data for 77 districts; columns are unnamed (A1-A16) in the source.
+      - name: loan
+        description: One row per loan (682). Status A-D encodes finished/running and paid/in default.
+      - name: trans
+        description: 1,056,320 account transactions with running balance.
+      - name: card
+        description: Credit cards issued to dispositions (892).
+      - name: order
+        description: Standing payment orders (6,471).

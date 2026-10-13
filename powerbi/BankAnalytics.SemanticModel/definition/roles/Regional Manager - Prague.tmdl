@@ -1,0 +1,6 @@
+/// Static row-level security demo: a Prague regional manager sees only Prague districts.
+role 'Regional Manager - Prague'
+	modelPermission: read
+
+	tablePermission District = District[region] = "Prague"
+

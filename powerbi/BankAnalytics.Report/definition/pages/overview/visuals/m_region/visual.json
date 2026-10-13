@@ -1,0 +1,114 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "m_region",
+  "position": {
+    "x": 460,
+    "y": 470,
+    "z": 8,
+    "height": 230,
+    "width": 770,
+    "tabOrder": 8
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "District"
+                    }
+                  },
+                  "Property": "region"
+                }
+              },
+              "queryRef": "District.region",
+              "nativeQueryRef": "region",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Inflow"
+                }
+              },
+              "queryRef": "Monthly KPIs.Inflow",
+              "nativeQueryRef": "Inflow"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Net Flow"
+                }
+              },
+              "queryRef": "Monthly KPIs.Net Flow",
+              "nativeQueryRef": "Net Flow"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Inflow YoY %"
+                }
+              },
+              "queryRef": "Monthly KPIs.Inflow YoY %",
+              "nativeQueryRef": "Inflow YoY %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Overdrawn Account-Month Rate"
+                }
+              },
+              "queryRef": "Monthly KPIs.Overdrawn Account-Month Rate",
+              "nativeQueryRef": "Overdrawn Account-Month Rate"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Regional scorecard'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

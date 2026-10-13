@@ -1,0 +1,126 @@
+table Loans
+
+	measure 'Loan Count' = COUNTROWS(Loans)
+		formatString: #,0
+
+	measure 'Defaulted Loans' = CALCULATE([Loan Count], Loans[is_default] = TRUE())
+		formatString: #,0
+
+	measure 'Default Rate' = DIVIDE([Defaulted Loans], [Loan Count])
+		formatString: 0.0%
+
+	measure Exposure = SUM(Loans[loan_amount_czk])
+		formatString: #,0
+
+	measure 'Exposure in Default' = CALCULATE([Exposure], Loans[is_default] = TRUE())
+		formatString: #,0
+
+	measure 'Exposure in Default %' = DIVIDE([Exposure in Default], [Exposure])
+		formatString: 0.0%
+
+	measure 'Average Loan' = AVERAGE(Loans[loan_amount_czk])
+		formatString: #,0
+
+	column loan_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: loan_id
+
+	column account_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: account_id
+
+	column granted_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: granted_date
+
+	column loan_amount_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: loan_amount_czk
+
+	column duration_months
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: duration_months
+
+	column monthly_payment_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: monthly_payment_czk
+
+	column status_code
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status_code
+
+	column status_description
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status_description
+
+	column is_default
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_default
+
+	column district_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: district_id
+
+	column owner_gender
+		dataType: string
+		summarizeBy: none
+		sourceColumn: owner_gender
+
+	column owner_age_at_grant
+		dataType: int64
+		formatString: 0
+		summarizeBy: average
+		sourceColumn: owner_age_at_grant
+
+	column n_negative_balance_events
+		dataType: int64
+		formatString: 0
+		summarizeBy: sum
+		sourceColumn: n_negative_balance_events
+
+	column min_balance_90d_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: average
+		sourceColumn: min_balance_90d_czk
+
+	column payment_to_inflow_ratio
+		dataType: double
+		formatString: 0.00
+		summarizeBy: average
+		sourceColumn: payment_to_inflow_ratio
+
+	column overdrawn_before_loan
+		dataType: string
+		summarizeBy: none
+		sourceColumn: overdrawn_before_loan
+
+	partition Loans = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fct_loans.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Selected = Table.SelectColumns(Promoted, {"loan_id", "account_id", "granted_date", "loan_amount_czk", "duration_months", "monthly_payment_czk", "status_code", "status_description", "is_default", "district_id", "owner_gender", "owner_age_at_grant", "n_negative_balance_events", "min_balance_90d_czk", "payment_to_inflow_ratio"}),
+				    Blanks = Table.ReplaceValue(Selected, "", null, Replacer.ReplaceValue, Table.ColumnNames(Selected)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"loan_id", Int64.Type}, {"account_id", Int64.Type}, {"granted_date", type date}, {"loan_amount_czk", type number}, {"duration_months", Int64.Type}, {"monthly_payment_czk", type number}, {"status_code", type text}, {"status_description", type text}, {"is_default", type logical}, {"district_id", Int64.Type}, {"owner_gender", type text}, {"owner_age_at_grant", Int64.Type}, {"n_negative_balance_events", Int64.Type}, {"min_balance_90d_czk", type number}, {"payment_to_inflow_ratio", type number}}, "en-US"),
+				    WithFlag = Table.AddColumn(Typed, "overdrawn_before_loan", each if [n_negative_balance_events] > 0 then "Yes" else "No", type text)
+				in
+				    WithFlag

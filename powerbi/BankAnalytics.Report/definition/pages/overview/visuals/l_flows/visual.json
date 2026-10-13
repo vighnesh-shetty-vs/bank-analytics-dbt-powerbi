@@ -1,0 +1,86 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "l_flows",
+  "position": {
+    "x": 20,
+    "y": 150,
+    "z": 4,
+    "height": 300,
+    "width": 760,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Date"
+                    }
+                  },
+                  "Property": "month_start"
+                }
+              },
+              "queryRef": "Date.month_start",
+              "nativeQueryRef": "month_start",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Inflow"
+                }
+              },
+              "queryRef": "Monthly KPIs.Inflow",
+              "nativeQueryRef": "Inflow"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Monthly KPIs"
+                    }
+                  },
+                  "Property": "Outflow"
+                }
+              },
+              "queryRef": "Monthly KPIs.Outflow",
+              "nativeQueryRef": "Outflow"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monthly inflow vs outflow (CZK)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

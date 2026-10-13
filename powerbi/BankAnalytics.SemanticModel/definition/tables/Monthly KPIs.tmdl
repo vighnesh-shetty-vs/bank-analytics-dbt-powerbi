@@ -1,0 +1,112 @@
+table 'Monthly KPIs'
+
+	measure Inflow = SUM('Monthly KPIs'[inflow_czk])
+		formatString: #,0
+
+	measure Outflow = SUM('Monthly KPIs'[outflow_czk])
+		formatString: #,0
+
+	measure 'Net Flow' = [Inflow] - [Outflow]
+		formatString: #,0
+
+	measure 'Transaction Count' = SUM('Monthly KPIs'[transactions])
+		formatString: #,0
+
+	measure 'New Accounts' = SUM('Monthly KPIs'[new_accounts])
+		formatString: #,0
+
+	measure 'Active Accounts (Latest Month)' = VAR LastMonth = MAX('Monthly KPIs'[month_start]) RETURN CALCULATE(SUM('Monthly KPIs'[active_accounts]), 'Monthly KPIs'[month_start] = LastMonth)
+		formatString: #,0
+
+	measure 'Deposits (Latest Month)' = VAR LastMonth = MAX('Monthly KPIs'[month_start]) RETURN CALCULATE(SUM('Monthly KPIs'[month_end_balance_czk]), 'Monthly KPIs'[month_start] = LastMonth)
+		formatString: #,0
+
+	measure 'Balance per Active Account' = DIVIDE([Deposits (Latest Month)], [Active Accounts (Latest Month)])
+		formatString: #,0
+
+	measure 'Inflow YoY %' = VAR PrevYear = CALCULATE([Inflow], SAMEPERIODLASTYEAR('Date'[date_day])) RETURN DIVIDE([Inflow] - PrevYear, PrevYear)
+		formatString: 0.0%
+
+	measure 'Card Share of Outflow' = DIVIDE(SUM('Monthly KPIs'[card_spend_czk]), [Outflow])
+		formatString: 0.00%
+
+	measure 'Overdrawn Account-Month Rate' = DIVIDE(SUM('Monthly KPIs'[accounts_with_negative_balance]), SUM('Monthly KPIs'[active_accounts]))
+		formatString: 0.00%
+
+	column month_start
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		summarizeBy: none
+		sourceColumn: month_start
+
+	column district_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: district_id
+
+	column active_accounts
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: active_accounts
+
+	column new_accounts
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: new_accounts
+
+	column transactions
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: transactions
+
+	column inflow_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: inflow_czk
+
+	column outflow_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: outflow_czk
+
+	column net_flow_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: net_flow_czk
+
+	column card_spend_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: card_spend_czk
+
+	column month_end_balance_czk
+		dataType: double
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: month_end_balance_czk
+
+	column accounts_with_negative_balance
+		dataType: int64
+		formatString: #,0
+		summarizeBy: sum
+		sourceColumn: accounts_with_negative_balance
+
+	partition 'Monthly KPIs' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "rpt_monthly_kpis.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Selected = Table.SelectColumns(Promoted, {"month_start", "district_id", "active_accounts", "new_accounts", "transactions", "inflow_czk", "outflow_czk", "net_flow_czk", "card_spend_czk", "month_end_balance_czk", "accounts_with_negative_balance"}),
+				    Blanks = Table.ReplaceValue(Selected, "", null, Replacer.ReplaceValue, Table.ColumnNames(Selected)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"month_start", type date}, {"district_id", Int64.Type}, {"active_accounts", Int64.Type}, {"new_accounts", Int64.Type}, {"transactions", Int64.Type}, {"inflow_czk", type number}, {"outflow_czk", type number}, {"net_flow_czk", type number}, {"card_spend_czk", type number}, {"month_end_balance_czk", type number}, {"accounts_with_negative_balance", Int64.Type}}, "en-US")
+				in
+				    Typed

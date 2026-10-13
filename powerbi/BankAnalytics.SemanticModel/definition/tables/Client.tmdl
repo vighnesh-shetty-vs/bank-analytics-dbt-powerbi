@@ -1,0 +1,35 @@
+table Client
+
+	column client_id
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: client_id
+
+	column gender
+		dataType: string
+		summarizeBy: none
+		sourceColumn: gender
+
+	column age_band
+		dataType: string
+		summarizeBy: none
+		sourceColumn: age_band
+
+	column age_at_end_1998
+		dataType: int64
+		formatString: 0
+		summarizeBy: average
+		sourceColumn: age_at_end_1998
+
+	partition Client = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_clients.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Selected = Table.SelectColumns(Promoted, {"client_id", "gender", "age_band", "age_at_end_1998"}),
+				    Blanks = Table.ReplaceValue(Selected, "", null, Replacer.ReplaceValue, Table.ColumnNames(Selected)),
+				    Typed = Table.TransformColumnTypes(Blanks, {{"client_id", Int64.Type}, {"gender", type text}, {"age_band", type text}, {"age_at_end_1998", Int64.Type}}, "en-US")
+				in
+				    Typed

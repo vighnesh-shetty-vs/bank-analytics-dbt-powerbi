@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "t_status",
+  "position": {
+    "x": 20,
+    "y": 440,
+    "z": 7,
+    "height": 260,
+    "width": 600,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Loans"
+                    }
+                  },
+                  "Property": "status_description"
+                }
+              },
+              "queryRef": "Loans.status_description",
+              "nativeQueryRef": "status_description",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Loans"
+                    }
+                  },
+                  "Property": "Loan Count"
+                }
+              },
+              "queryRef": "Loans.Loan Count",
+              "nativeQueryRef": "Loan Count"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Loans"
+                    }
+                  },
+                  "Property": "Exposure"
+                }
+              },
+              "queryRef": "Loans.Exposure",
+              "nativeQueryRef": "Exposure"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Loans"
+                    }
+                  },
+                  "Property": "Average Loan"
+                }
+              },
+              "queryRef": "Loans.Average Loan",
+              "nativeQueryRef": "Average Loan"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Portfolio by loan status'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
